@@ -53,6 +53,24 @@ def infijo_a_postfijo(expresion):
 
     return "".join(salida)
 
+def generar_cuartetos(postfijo):
+    pila = []
+    cuartetos = []
+    contador = 1
+    operadores = ['+','-','*','/','^']
+
+    for token in postfijo:
+        if token not in operadores:
+            pila.append(token)
+        else:
+            argumento2 = pila.pop()
+            argumento1 = pila.pop()
+            temporal = "T" + str(contador)
+            contador += 1
+            cuarteto = (token, argumento1,argumento2,temporal)
+            cuartetos.append(cuarteto)
+            pila.append(temporal)
+    return cuartetos
 
 # Pruebas de ejecución
 if __name__ == "__main__":
@@ -61,5 +79,11 @@ if __name__ == "__main__":
 
     resultado = infijo_a_postfijo(ejemplo)
 
+    cuartetos = generar_cuartetos(resultado)
+
     print(f"Infijo: {ejemplo}")
     print(f"Postfijo: {resultado}")
+    print("\nCuartetos")
+    print("Nº | operador | Arg1 | Arg2 | Resultado")
+    for i, c in enumerate(cuartetos, 1):
+        print(f"{i:2} | {c[0]:8} |{c[1]:4}  |{c[2]:4}  |{c[3]}")
